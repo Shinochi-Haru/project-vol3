@@ -4,8 +4,8 @@ namespace ClearSky
 {
     public class SimplePlayerController : MonoBehaviour
     {
-        [SerializeField] float movePower = 10f;
-        [SerializeField] float jumpPower = 15f; //Set Gravity Scale in Rigidbody2D Component to 5
+        [SerializeField] float _moveSpeed = 10f;
+        [SerializeField] float _jumpPower = 15f; 
 
         private Rigidbody2D rb;
         private Animator anim;
@@ -32,7 +32,7 @@ namespace ClearSky
                 Attack();
                 Jump();
                 Run();
-
+                AddSpeed(0);
             }
         }
         private void OnTriggerEnter2D(Collider2D other)
@@ -67,7 +67,7 @@ namespace ClearSky
                     anim.SetBool("isRun", true);
 
             }
-            transform.position += moveVelocity * movePower * Time.deltaTime;
+            transform.position += moveVelocity * _moveSpeed * Time.deltaTime;
         }
         void Jump()
         {
@@ -84,7 +84,7 @@ namespace ClearSky
 
             rb.velocity = Vector2.zero;
 
-            Vector2 jumpVelocity = new Vector2(0, jumpPower);
+            Vector2 jumpVelocity = new Vector2(0, _jumpPower);
             rb.AddForce(jumpVelocity, ForceMode2D.Impulse);
 
             isJumping = false;
@@ -122,6 +122,10 @@ namespace ClearSky
                 anim.SetTrigger("idle");
                 alive = true;
             }
+        }
+        public void AddSpeed(float speed)
+        {
+            _moveSpeed += speed;
         }
     }
 }
